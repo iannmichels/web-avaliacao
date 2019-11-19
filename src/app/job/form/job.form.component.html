@@ -1,0 +1,241 @@
+<div class="cardpai">
+    <div class="card">
+        <div class="text-center">
+            <h1>Cadastro de Pessoa</h1>
+        </div>
+
+        <div class="col-12">
+
+            <form class="form-inline" [formGroup]="form">
+                <p-fieldset class="fieldclas">
+                    <div class="col-12 row">
+                        <div class="d-flex" style="width:100%">
+                            <div class="col-4">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="name" name="name" pInputText placeholder="Nome*"
+                                        type="text">
+                                </span>
+                                <p-message style="position:absolute;min-width: 87%;max-width: 89%;" severity="error"
+                                    [text]="form.controls['name'].errors['minlength'] ? 'Mínimo 3 caracteres' : ''"
+                                    *ngIf="form.controls['name'].value && form.controls['name'].value.length < 100  && !form.controls['name'].valid && form.controls['name'].dirty">
+                                </p-message>
+                            </div>
+                            <div class="col-4">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input clearable mask="000.000.000-00" formControlName="cpf" name="cpf" pInputText
+                                        placeholder="CPF*" type="text">
+                                </span>
+                                <p-message style="position:absolute;min-width: 87%;max-width: 89%;" severity="error"
+                                    [text]="form.controls['cpf'].errors['minlength'] ? 'Mínimo 11 caracteres' : ''"
+                                    *ngIf="form.controls['cpf'].value && form.controls['cpf'].value.length < 11  && !form.controls['cpf'].valid && form.controls['cpf'].dirty">
+                                </p-message>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-12 row">
+                        <div class="d-flex" style="width:100%">
+                            <div class="col-4">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input clearable mask="99999-999" formControlName="cep" name="cep" pInputText
+                                        placeholder="Cep*" type="text">
+                                    <p-message style="position:absolute;min-width: 87%;max-width: 89%;" severity="error"
+                                        [text]="form.controls['cep'].errors['minlength'] ? 'Mínimo 8 caracteres' : ''"
+                                        *ngIf="form.controls['cep'].value && form.controls['cpf'].value.length < 8  && !form.controls['cep'].valid && form.controls['cep'].dirty">
+                                    </p-message>
+                                </span>
+                            </div>
+                            <div class="col-3">
+                                <button [disabled]="!form.controls['cep'].valid" (click)="buscarCep($event)" pButton
+                                    type="button" label="Buscar" pTooltip="Buscar" tooltipPosition="bottom"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-12 row">
+                        <div class="d-flex" style="width:100%">
+                            <div class="col-3">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="logradouro" name="logradouro" pInputText
+                                        placeholder="Logradouro*" type="text">
+                                </span>
+                            </div>
+                            <div class="col-3">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="bairro" name="bairro" pInputText placeholder="Bairro*"
+                                        type="text">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-12 row">
+                        <div class="d-flex" style="width:100%">
+                            <div class="col-2">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="cidade" name="cidade" pInputText placeholder="Cidade*"
+                                        type="text">
+                                </span>
+                            </div>
+                            <div class="col-2">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="uf" name="uf" pInputText placeholder="UF*" type="text">
+                                </span>
+                            </div>
+                            <div class="col-4">
+                                <span class="md-inputfield" style="text-align: right;">
+                                    <input formControlName="complemento" name="complemento" pInputText
+                                        placeholder="Complemento" type="text">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <p-fieldset legend="E-mail*" class="fieldclasEmail">
+                        <form class="form-inline" [formGroup]="formEmail">
+                            <div class="col-12 row distTab">
+                                <div class="col-6">
+                                    <span class="md-inputfield">
+                                        <input formControlName="descricao" name="descricao" pInputText
+                                            placeholder="E-mail" type="text">
+                                    </span>
+                                </div>
+                                <div class="col-3">
+                                    <button [disabled]="!formEmail.controls['descricao'].valid" (click)="adicionarEmail($event)" *ngIf="!emailSelecionado" pButton
+                                        type="button" label="Adicionar" pTooltip="Cadastrar Job"
+                                        tooltipPosition="bottom"></button>
+                                    <button [disabled]="!formEmail.controls['descricao'].valid" (click)="atualizarEmail()" *ngIf="emailSelecionado" pButton type="button"
+                                        label="Atualizar" pTooltip="Cadastrar Job" tooltipPosition="bottom"></button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-12 row distTab">
+                                <div *ngIf="pessoa.emails?.length > 0" class="table-wrapper responsive md">
+                                    <p-table [responsive]="true" #dt [value]="pessoa.emails">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="text-left" scope="col">
+                                                    Descricao
+                                                </th>
+                                                <th class="text-left" scope="col">
+                                                    Ações
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-dados let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td class="text-left">{{dados.descricao}}</td>
+                                                <td class="text-left">
+                                                    <button (click)="editar(dados,rowIndex,'email')" pButton
+                                                        type="button" label="Editar"></button>
+                                                    <button style="margin-left: 2%" (click)="removerEmail(rowIndex)"
+                                                        pButton type="button" label="Remover"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="summary">
+                                            Total de registros: {{pessoa.emails.length}}
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </form>
+                    </p-fieldset>
+                    <br />
+                    <p-fieldset legend="Telefone*" class="fieldclasEmail">
+                        <form class="form-inline" [formGroup]="formTelefone">
+                            <div class="col-12 row distTab">
+                                <div class="col-3">
+                                    <span class="md-inputfield">
+                                        <ng-select placeholder="Tipo Telefone" formControlName="tipoTelefone">
+                                            <ng-option *ngFor="let drop of dropTipoTelefone" [value]="drop.value">
+                                                {{drop.label}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </span>
+                                </div>
+                                <div class="col-3">
+                                    <span class="md-inputfield">
+                                        <input *ngIf="formTelefone.controls['tipoTelefone'].value === 'CELULAR'"
+                                            mask="(00) 00000-0000" formControlName="descricao" name="descricao"
+                                            pInputText placeholder="Numero*" type="text">
+                                        <input *ngIf="formTelefone.controls['tipoTelefone'].value != 'CELULAR'"
+                                            mask="(00) 0000-0000" formControlName="descricao" name="descricao"
+                                            pInputText placeholder="Numero*" type="text">
+                                    </span>
+                                </div>
+
+                                <div class="col-3">
+                                    <button [disabled]="!formTelefone.controls['descricao'].valid" (click)="adicionarTelefone($event)" *ngIf="!telefoneSelecionado" pButton
+                                        type="button" label="Adicionar" pTooltip="Adicionar Telefone"
+                                        tooltipPosition="bottom"></button>
+                                    <button (click)="atualizarTelefone()" *ngIf="telefoneSelecionado" pButton
+                                        type="button" label="Atualizar" pTooltip="Atualizar Telefone"
+                                        tooltipPosition="bottom"></button>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="col-12 row">
+                                <div *ngIf="pessoa.telefones?.length > 0" class="table-wrapper responsive md">
+                                    <p-table [responsive]="true" #dt [value]="pessoa.telefones">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="text-left" scope="col">
+                                                    Numero
+                                                </th>
+                                                <th class="text-left" scope="col">
+                                                    Tipo Telefone
+                                                </th>
+                                                <th class="text-left" scope="col">
+                                                    Ações
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-dados let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td class="text-left" *ngIf="dados.tipoTelefone == 'CELULAR'">{{dados.descricao | mask: '(00) 00000-0000'}}</td>
+                                                <td class="text-left" *ngIf="dados.tipoTelefone !== 'CELULAR'">{{dados.descricao | mask: '(00) 0000-0000'}}</td>
+                                                <td class="text-left">
+                                                    {{dados.tipoTelefone}}
+                                                </td>
+                                                <td class="text-left">
+                                                    <button (click)="editar(dados,rowIndex)" pButton type="button"
+                                                        label="Editar"></button>
+                                                    <button style="margin-left: 2%" (click)="removerTelefone(rowIndex)"
+                                                        pButton type="button" label="Remover"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="summary">
+                                            Total de registros: {{pessoa.telefones.length}}
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                    </p-fieldset>
+                    <br />
+                </p-fieldset>
+
+            </form>
+            <br />
+            <div class="col-12 row">
+                <div class="col-9"></div>
+                <div class="col-1">
+                    <button *ngIf="this.form.valid" (click)="salvar()" pButton type="button" label="Cadastrar"
+                        pTooltip="Cadastrar" tooltipPosition="bottom"></button>
+                </div>
+                <div class="col-2">
+                    <button (click)="voltar()" pButton type="button" label="Voltar" pTooltip="Voltar"
+                        tooltipPosition="bottom"></button>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>

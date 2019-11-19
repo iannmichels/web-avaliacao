@@ -1,0 +1,86 @@
+<div class="cardpai">
+    <div class="card">
+        <div class="text-right">
+            <button (click)="logout()" pButton type="button" label="Logout" pTooltip="Logout"
+                tooltipPosition="bottom"></button>
+        </div>
+        <div class="text-center">
+            <h1>Consulta de Pessoas</h1>
+        </div>
+        <div class="col-lg-12">
+            <form class="form-inline" [formGroup]="form">
+                <div class="col-lg-12 row">
+                    <div class="d-flex justify-content-center" style="width:100%">
+                        <div style="position: relative;" class="col-lg-3 col-md-6">
+                            <span class="md-inputfield">
+                                <input clearable mask="000.000.000-00" formControlName="cpf" name="cpf" pInputText
+                                    placeholder="CPF" type="text">
+                            </span>
+                        </div>
+                        <div style="position: relative;" class="col-lg-3 col-md-6">
+                            <span class="md-inputfield">
+                                <input formControlName="name" name="name" pInputText placeholder="Nome" type="text">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+        </div>
+    </div>
+    <br />
+    <div *ngIf="!pessoas || pessoas?.content.length == 0" class="text-center">Não há registros a serem
+        exibidos.
+    </div>
+    <div *ngIf="pessoas?.content.length > 0" class="table-wrapper responsive md">
+        <p-table [responsive]="true" #dt (onLazyLoad)="buscar($event)" [lazyLoadOnInit]="false" [lazy]="true"
+            [value]="pessoas.content" [paginator]="true" [rows]="pessoas?.size" [totalRecords]="pessoas?.totalElements">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="'name'">
+                        Nome
+                        <p-sortIcon [field]="'name'"></p-sortIcon>
+                    </th>
+                    <th [pSortableColumn]="'cpf'">
+                        CPF
+                        <p-sortIcon [field]="'cpf'"></p-sortIcon>
+                    </th>
+                    <th [pSortableColumn]="'endereco.uf'">
+                        UF
+                        <p-sortIcon [field]="'endereco.uf'"></p-sortIcon>
+                    </th>
+                    <th class="text-left" *ngIf="auth.isAdmin">
+                        Ações
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-pessoa>
+                <tr>
+                    <td>
+                        <b><span *ngIf="auth.isAdmin" class="link" (click)="editar(pessoa.id)" pTooltip="Editar Job"
+                                tooltipPosition="top">{{pessoa.name}}</span>
+                            <span *ngIf="!auth.isAdmin">{{pessoa.name}}</span>
+                        </b>
+                    </td>
+                    <td>
+                        {{pessoa.cpf | cpf}}
+                    </td>
+                    <td>
+                        {{pessoa.endereco.uf}}
+                    </td>
+                    <td class="text-left" *ngIf="auth.isAdmin">
+                        <button style="margin-left: 2%" (click)="removerJob(pessoa.id)" pButton type="button"
+                            label="Delete"></button>
+
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                Total de registros: {{pessoas.totalElements}}
+            </ng-template>
+        </p-table>
+    </div>
+    <br />
+    <button *ngIf="auth.isAdmin" pButton type="button" label="Novo" pTooltip="Cadastrar Job" tooltipPosition="bottom"
+        routerLink="/pessoas/new"></button>
+</div>

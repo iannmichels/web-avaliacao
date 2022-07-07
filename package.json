@@ -23,7 +23,7 @@
     "@ng-select/ng-select": "^3.0.7",
     "angular2-text-mask": "^9.0.0",
     "igniteui-cli": "^4.3.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ngx-mask": "^8.1.6",
     "primeng": "^7.1.0",
     "rxjs": "~6.4.0",
